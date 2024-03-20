@@ -1,0 +1,276 @@
+books
+name
+total_pages
+author
+published_by
+price
+
+
+
+authors
+name
+age
+
+
+
+publishers
+name
+address
+
+// age: {
+    //   type: mongoose.Schema.Types.ObjectId,
+    //   ref: 'Age',
+    //   required: true
+    // },
+    
+    // name: {
+        //   type: mongoose.Schema.Types.ObjectId,
+        //   ref: 'Name',
+        //   required: true
+        // },
+        
+<div class="mb-3">
+    <label for="author">Author</label>
+    <select class="form-control form-control-lg" name="author" id="author">
+        <% authors.forEach(function(author) { %>
+            <option value="<%= author._id %>">
+                <%= author.name %>
+            </option>
+        <% }); %>
+    </select>
+</div>
+
+
+                            <div class="mb-3">
+                                <label>
+                                    <input type="checkbox" name="role" value="first"> First role
+                                </label>
+                                <label>
+                                    <input type="checkbox" name="role" value="second"> Second role
+                                </label>
+                            </div>
+    
+
+
+
+
+                            router.post("/update-book/:id", async (req, res) => {
+                                try {
+                                  const id = req.params.id;
+                                  const { name, total_pages, author, publisher, price } = req.body; // Corrected property name
+                                  const updatedBook = { name, total_pages, author, publisher, price }; // Corrected property name
+                                  await Book.findByIdAndUpdate(id, updatedBook);
+                              
+                                  req.session.message = {
+                                    type: "success",
+                                    message: "Book updated successfully",
+                                  };
+                                  res.redirect("/books");
+                                } catch (error) {
+                                  console.error(error);
+                                  req.session.message = {
+                                    type: "danger",
+                                    message: "Error updating book",
+                                  };
+                                  // res.redirect(`/edit-book/${id}`);
+                                }
+                              });
+                              
+                              router.get("/delete-book/:id", async (req, res) => {
+                                try {
+                                  const id = req.params.id;
+                                  const deletedBook = await Book.findByIdAndDelete(id);
+                              
+                                  if (!deletedBook) {
+                                    req.session.message = {
+                                      type: "danger",
+                                      message: "Book not found or already deleted",
+                                    };
+                                  } else {
+                                    req.session.message = {
+                                      type: "success",
+                                      message: "Book deleted successfully",
+                                    };
+                                  }
+                              
+                                  res.redirect("/books");
+                                } catch (error) {
+                                  console.error(error);
+                                  req.session.message = {
+                                    type: "danger",
+                                    message: "Error deleting book",
+                                  };
+                                  res.redirect("/books");
+                                }
+                              });
+                              
+                              
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                              router.get("/books", async (req, res) => {
+                                try {
+                                  const title = "Book List";
+                                  const message = req.session.message;
+                                  // const books = await Book.find();
+                                  // Clear the session message
+                                  req.session.message = null;
+                                  var books = await Book.find({}).populate('author publish');
+                              
+                                  res.render("booklist", { title, message, books });
+                                } catch (error) {
+                                  console.error(error);
+                                  res.status(500).send("Internal Server Error");
+                                }
+                              });
+                              
+                              router.get("/add-book", async (req, res) => {
+                                try {
+                                  const title = "Add Book";
+                                  const message = req.session.message;
+                                   const authors = await Author.find();
+                                  const publishers =await Publish.find()
+                                  // Clear the session message
+                                  req.session.message = null;
+                              
+                                  res.render("add-book", { title, message, authors,publishers });
+                                } catch (error) {
+                                  console.error(error);
+                                  res.status(500).send("Internal Server Error");
+                                }
+                              });
+                              
+                              router.post("/save-book", async (req, res) => {
+                                try {
+                                  const { name, total_pages, author, publish, price } = req.body;
+                                  const newBook = new Book({ name, total_pages, author, publish, price });
+                                  await newBook.save();
+                              
+                                  req.session.message = {
+                                    type: "success",
+                                    message: "Book added successfully",
+                                  };  
+                                  res.redirect("/books");
+                                } catch (error) {
+                                  console.error(error);
+                                  req.session.message = {
+                                    type: "danger",
+                                    message: "Error adding book",
+                                  };
+                                  res.redirect("/add-book");
+                                }
+                              });
+                              
+                              
+                              
+                              router.get("/edit-book/:id", async (req, res) => {
+                                try {
+                                  const id = req.params.id;
+                                  const message = req.session.message;
+                                  const book = await Book.findById(id);
+                              
+                                  if (!book) {
+                                    req.session.message = {
+                                      type: "danger",
+                                      message: "Invalid ID",
+                                    };
+                                    return res.redirect("/books");
+                                  }
+                              
+                                  res.render("edit-book", {
+                                    title: "Edit Book",
+                                    message,
+                                    book,
+                                  });
+                                } catch (error) {
+                                  console.error(error);
+                                  req.session.message = {
+                                    type: "danger",
+                                    message: "Error book author",
+                                  };
+                                  res.redirect("/books");
+                                }
+                              });
+                              
+                              // POST route for updating an author
+                              router.post("/update-book/:id", async (req, res) => {
+                                try {
+                                  const id = req.params.id;
+                                  const updatedBook = {
+                                  };
+                              
+                                  await Book.findByIdAndUpdate(id, updatedBook);
+                              
+                                  req.session.message = {
+                                    type: "success",
+                                    message: "Book updated successfully",
+                                  };
+                                  res.redirect("/books");
+                                } catch (error) {
+                                  console.error(error);
+                                  req.session.message = {
+                                    type: "danger",
+                                    message: "Error updating author",
+                                  };
+                                  res.redirect(`/edit-book/${id}`);
+                                }
+                              });
+                              
+                              // POST route for deleting an author
+                              router.get("/delete-book/:id", async (req, res) => {
+                                try {
+                                  const id = req.params.id;
+                                  const deletedBook = await Book.findByIdAndDelete(id);
+                              
+                                  if (!deletedBook) {
+                                    req.session.message = {
+                                      type: "danger",
+                                      message: "Book not found or already deleted",
+                                    };
+                                  } else {
+                                    req.session.message = {
+                                      type: "success",
+                                      message: "Book deleted successfully",
+                                    };
+                                  }
+                              
+                                  res.redirect("/books");
+                                } catch (error) {
+                                  console.error(error);
+                                  req.session.message = {
+                                    type: "danger",
+                                    message: "Error deleting author",
+                                  };
+                                  res.redirect("/books");
+                                }
+                              });
+                              
+                              
+
+                              category
+id
+name
+slug
+content
+
+post
+id
+category_id
+name
+slug
+content

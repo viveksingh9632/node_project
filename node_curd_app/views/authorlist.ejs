@@ -1,0 +1,43 @@
+<%- include('layout/header') %>
+<div class="container">
+    <div class="row my-4">
+        <div class="col-lg-12">
+            <% if (message) { %>
+                <div class="alert alert-dismissible fade show alert-<%= message.type %>" role="alert">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <strong><%= message.message %></strong>
+                </div>
+            <% } %>
+            <div class="table-responsive">
+                <table class="table table-striped text-center">
+                    <thead>
+                        <tr class="table-light">
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Age</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% authors.forEach(function(author, index) { %>
+                            <tr>
+                                <td><%= index + 1 %></td> <!-- Add 1 to index to start from 1 instead of 0 -->
+                                <td><%= author.name %></td>
+                                <td><%= author.age %></td>
+                                <td>
+                                    <a href="/edit-author/<%= author._id %>" class="text-success" title="Edit">
+                                        <i class="fas fa-edit fa-lg mx-1"></i>
+                                    </a>
+                                    <a href="/delete-author/<%= author._id %>" class="text-danger" title="Delete">
+                                        <i class="fas fa-trash-alt fa-lg mx-1"></i>
+                                    </a>
+                                </td> 
+                            </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include('layout/footer') %>

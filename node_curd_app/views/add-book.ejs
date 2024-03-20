@@ -1,0 +1,61 @@
+<%- include('layout/header') %>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6 mx-auto mt-4">
+            <div class="card shadow">
+                <div class="card-header bg-primary">
+                    <h3 class="text-light">Add Book</h3>
+                </div>
+                <div class="card-body p-4">
+                    <form action="/save-book" method="post" id="add-form">
+                        <!-- Name -->
+                        <div class="mb-3">
+                            <label for="name">Name</label>
+                            <input type="text" name="name" class="form-control form-control-lg" placeholder="Enter name" required>
+                        </div>
+                        <!-- Total Pages -->
+                        <div class="mb-3">
+                            <label for="total_pages">Total Pages</label>
+                            <input type="text" name="total_pages" class="form-control form-control-lg" placeholder="Enter total pages" required>
+                        </div>
+
+
+                        <!-- Author -->
+                        <div class="mb-3">
+                            <label for="author">Author</label>
+                            <select class="form-control form-control-lg" name="author" id="author">
+                                <option value="">Select an option</option>
+                                <% authors.forEach(author => { %>
+                                    <option value="<%= author._id %>"><%= author.name %></option> 
+                                <% }); %>
+                            </select>
+                        </div>
+
+
+                        <div class="mb-3">
+                            <label for="publish">Publish</label>
+                            <select class="form-control form-control-lg" name="publish" id="publish">
+                                <option value="">Select an option</option>
+                                <% publishers.forEach(publish => { %>
+                                    <option value="<%= publish._id %>"><%= publish.name %></option> 
+                                <% }); %>
+                            </select>
+                        </div>
+                                               
+
+
+                        <div class="mb-3">
+                            <label for="price">Price</label>
+                            <input type="text" name="price" class="form-control form-control-lg" placeholder="Enter price" required>
+                        </div>
+                        <!-- Submit Button -->
+                        <div class="mb-3 d-grid">
+                            <input type="submit" name="submit" value="Add Book" class="btn btn-primary btn-lg" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include('layout/footer') %>

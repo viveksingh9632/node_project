@@ -1,0 +1,38 @@
+<%- include('layout/header') %>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6 mx-auto mt-4">
+            <div class="card shadow">
+                <% if (message) { %>
+                    <div class="alert alert-dismissible fade show alert-<%= message.type %>" role="alert">
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        <strong><%= message.message %></strong>
+                    </div>
+                <% } %>
+                <div class="card-header bg-primary">
+                    <h3 class="text-light">Edit tag</h3>
+                </div>
+                <div class="card-body p-4">
+                    <form action="/update-tag/<%= item._id %>" method="post" id="edit-form">
+                        <div class="mb-3">
+                            <label for="name">Name</label>
+                            <input type="text" name="name" class="form-control form-control-lg" placeholder="Enter name" value="<%= item.name %>" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="slug">Slug</label>
+                            <input type="text" name="slug" class="form-control form-control-lg" placeholder="Enter slug" value="<%= item.slug %>" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="content">Content</label>
+                            <input type="text" name="content" class="form-control form-control-lg" placeholder="Enter content" value="<%= item.content %>" required>
+                        </div>
+                        <div class="mb-3">
+                            <input type="submit" name="submit" value="Update item" class="btn btn-primary btn-lg" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include('layout/footer') %>

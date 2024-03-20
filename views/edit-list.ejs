@@ -1,0 +1,102 @@
+<%- include('layout/header')%>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 mx-auto mt-4">
+                <div class="card shadow">
+                    <% if (message) { %>
+                        <div class="alert alert-dismissible fade show alert-<%= message.type %>" role="alert">
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            <strong>
+                                <%= message.message %>
+                            </strong>
+                        </div>
+                        <% } %>
+                            <div class="card-header bg-primary">
+                                <h3 class="text-light"> Edit list </h3>
+                            </div>
+
+                            <div class="card-body p-4">
+                                <form action="/update-post/<%= list._id %>" method="post" id="edit-form">
+                                    <div class="mb-3">
+                                        <label for="category_id">Category</label>
+                                        <select class="form-control form-control-lg" name="category_id"
+                                            id="category_id">
+                                            <!-- <option value="">Select an option</option> -->
+                                            <% categories.forEach(function(category) { %>
+                                                <% if (list.category_id &&
+                                                    category._id.toString()===list.category_id.toString()) { %>
+                                                    <option value="<%= category._id %>" selected>
+                                                        <%= category.name %>
+                                                    </option>
+                                                    <% } else { %>
+                                                        <option value="<%= category._id %>">
+                                                            <%= category.name %>
+                                                        </option>
+                                                        <% } %>
+                                                            <% }); %>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="tag_id">Tag</label>
+                                        <select class="form-control form-control-lg" name="tag_id" id="tag_id">
+                                            <% tags.forEach(function(tag) { %>
+                                                <% if (list.tag_id && tag._id.toString()===list.tag_id.toString()) { %>
+                                                    <option value="<%= tag._id %>" selected>
+                                                        <%= tag.name %>
+                                                    </option>
+                                                    <% } else { %>
+                                                        <option value="<%= tag._id %>">
+                                                            <%= tag.name %>
+                                                        </option>
+                                                        <% } %>
+                                                            <% }); %>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="user_id">User</label>
+                                        <select class="form-control form-control-lg" name="user_id" id="user_id">
+                                            <% users.forEach(function(user) { %>
+                                                <% if (list.user_id && user._id.toString()===list.user_id.toString()) {
+                                                    %>
+                                                    <option value="<%= user._id %>" selected>
+                                                        <%= user.name %>
+                                                    </option>
+                                                    <% } else { %>
+                                                        <option value="<%= user._id %>">
+                                                            <%= user.name %>
+                                                        </option>
+                                                        <% } %>
+                                                            <% }); %>
+                                        </select>
+                                    </div>
+
+
+                                    <div class="mb-3">
+                                        <label for="name">Name</label>
+                                        <input type="text" name="name" class="form-control form-control-lg"
+                                            placeholder="Enter name" value="<%= list.name %>" required>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="slug">Slug</label>
+                                        <input type="text" name="slug" class="form-control form-control-lg"
+                                            placeholder="Enter slug" value="<%= list.slug %>" required>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="content">Content</label>
+                                        <input type="text" name="content" class="form-control form-control-lg"
+                                            placeholder="Enter content" value="<%= list.content %>" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <input type="submit" name="submit" value="Update list"
+                                            class="btn btn-primary btn-lg" />
+                                    </div>
+
+                                </form>
+                            </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <%- include('layout/footer')%>

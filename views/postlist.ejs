@@ -1,0 +1,64 @@
+<%- include('layout/header') %>
+<div class="container">
+    <div class="row my-4">
+        <div class="col-lg-12">
+            <% if (message) { %>
+            <div class="alert alert-dismissible fade show alert-<%= message.type %>" role="alert">
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <strong><%= message.message %></strong>
+            </div>
+            <% } %>
+            <div class="table-responsive">
+                <table class="table table-striped text-center">
+                    <thead>
+                        <tr class="table-light">
+                            <th>ID</th>
+                            <th>category_id</th>
+                            <th>user_id</th>
+
+                            <th>tag_id</th>
+                            <th>user_id</th>
+                            <th>Name</th>
+                            <th>Slug</th>
+                            <th>Content</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% listes.forEach(function(list, index) { %>
+                        <tr>
+                            <td><%= index %></td>
+                            <td>
+                                <% if (list.category_id) { %>
+                                    <p><%= list.category_id.name %></p>
+                                <% } %>
+                        
+                            </td>
+                            <td>
+                                <% if (list.tag_id) { %>
+                                <p><%= list.tag_id.name %></p>
+                                <!-- Render other category information as needed -->
+                            <% } %>
+                            </td>
+                            <td>
+                                <% if (list.user_id) { %>
+                                <p><%= list.user_id.name %></p>
+                                <!-- Render other category information as needed -->
+                            <% } %>
+                            </td>
+                            <td><%= list.name %></td>
+                            <td><%= list.slug %></td>
+                            <td><%= list.content %></td>
+                            <td>
+                                <a href="/edit-post/<%= list._id %>" class="text-success"><i class="fas fa-edit fa-lg mx-1"></i></a>
+                                <a href="/delete-post/<%= list._id %>" class="text-danger"><i class="fas fa-trash-alt fa-lg mx-1"></i></a>
+                            </td> 
+                        </tr>
+                        <% }); %>
+                    </tbody>
+                    </table>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include('layout/footer') %>
